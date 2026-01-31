@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
         // 30秒到了直接切换到 third act 场景
         if (gameTimer >= switchTime)
         {
-            SceneManager.LoadScene("third act");
+            SceneManager.LoadScene(4);
         }
     }
 

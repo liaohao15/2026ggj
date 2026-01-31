@@ -18,12 +18,21 @@ EditorBuildSettings:
     path: Assets/Scenes/road.unity
     guid: 283b58920d273c54e999a67d34b4a4ba
   - enabled: 1
-    path: Assets/Scenes/talkact.unity
-    guid: 6f7580095000ce848bcc193909d2705b
+    path: Assets/Scenes/ThirdTalk.unity
+    guid: 6256d2d1c77ef034cae22e5942e8b719
   - enabled: 1
     path: Assets/Scenes/third act.unity
     guid: 7e4610a30e5787f4197a46cdceb2d843
   - enabled: 1
     path: Assets/Scenes/fourth act.unity
     guid: 952a9539c20537a4bba9a6f56da5d1eb
+  - enabled: 1
+    path: Assets/Scenes/Storytalk.unity
+    guid: 673b818865274ae45a6ba296d7dbb0c8
+  - enabled: 1
+    path: Assets/Scenes/Lastact.unity
+    guid: d5cdc08dfbe04b949898c64f8b062667
+  - enabled: 1
+    path: Assets/Scenes/talkact.unity
+    guid: 6f7580095000ce848bcc193909d2705b
   m_configObjects: {}
