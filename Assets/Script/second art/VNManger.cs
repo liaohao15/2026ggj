@@ -1,25 +1,20 @@
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; // 新增：场景切换需要
+using UnityEngine.SceneManagement;
 
 public class VNManager : MonoBehaviour
 {
-    // 原有变量（完全保留）
-    public TextMeshProUGUI speakerName;
-    public TextMeshProUGUI speakingContent;
-    public TypewriterEffect typewriterEffect;
-    public Image avatarImage;
+    // 核心引用
     public AudioSource vocalAudio;
-
-    // 【新增】切换第三场景的按钮（Inspector赋值）
+    public Image BackgroundImage;
     public Button switchToThirdSceneBtn;
-    // 【新增】第三场景名称（需和Build Settings一致）
-    public string thirdSceneName = "ThirdScene";
+    public int targetSceneIndex = 3;
 
-    // 原有变量（完全保留）
+    // 音效文件名（匹配你的1.mp3）
+    public string sceneVocalFileName = "1";
+
+    // Excel路径
     private string storyPath = Constants.STORY_PATH;
     private string defaultStoryFileName = Constants.DEFAULT_STORY_FILE_NAME;
     private List<ExcelReader.ExcelData> storyData;
@@ -27,23 +22,26 @@ public class VNManager : MonoBehaviour
 
     void Start()
     {
-        // 【新增】初始化切换按钮：默认隐藏
+        // 初始化按钮
         if (switchToThirdSceneBtn != null)
         {
             switchToThirdSceneBtn.gameObject.SetActive(false);
-            // 绑定按钮点击事件
             switchToThirdSceneBtn.onClick.AddListener(SwitchToThirdScene);
         }
 
-        // 原有逻辑（完全保留）
+        // 加载Excel
         LoadStoryFromFile(storyPath + defaultStoryFileName);
         if (storyData != null && storyData.Count > 0)
         {
-            DisplayNextLine();
+            PlaySceneVocal();
+            DisplayThisLine();
+        }
+        else
+        {
+            Debug.LogError("未读取到Excel数据，无法加载背景");
         }
     }
 
-    // 原有逻辑（完全保留）
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -52,7 +50,6 @@ public class VNManager : MonoBehaviour
         }
     }
 
-    // 原有逻辑（完全保留）
     void LoadStoryFromFile(string path)
     {
         storyData = ExcelReader.ReadExcel(path);
@@ -62,97 +59,64 @@ public class VNManager : MonoBehaviour
         }
     }
 
-    // 原有逻辑（仅新增按钮显示/隐藏）
     void DisplayNextLine()
     {
         if (storyData == null || currentLine >= storyData.Count)
         {
             Debug.Log(Constants.END_OF_STORY);
-            // 【新增】剧情播放完毕，显示切换按钮
             if (switchToThirdSceneBtn != null)
             {
                 switchToThirdSceneBtn.gameObject.SetActive(true);
             }
             return;
         }
-
-        if (typewriterEffect.IsTyping())
-        {
-            typewriterEffect.CompleteLine();
-        }
-        else
-        {
-            // 【新增】播放新剧情时，隐藏切换按钮
-            if (switchToThirdSceneBtn != null)
-            {
-                switchToThirdSceneBtn.gameObject.SetActive(false);
-            }
-            DisplayThisLine();
-        }
+        DisplayThisLine();
     }
 
-    // 原有逻辑（仅新增协程调用）
     void DisplayThisLine()
     {
         var data = storyData[currentLine];
-        speakerName.text = data.speakerName;
-        speakingContent.text = data.speakingContent;
-        typewriterEffect.StartTyping(speakingContent.text);
 
-        if (!string.IsNullOrEmpty(data.avatarImageFileName))
+        // 加载背景（适配Excel中的rbg1.jpg/rbg2.jpg）
+        if (!string.IsNullOrEmpty(data.backgroundImageName))
         {
-            UpdateAvatarImage(data.avatarImageFileName);
-        }
-        else
-        {
-            avatarImage.gameObject.SetActive(false);
-        }
-
-        if (!string.IsNullOrEmpty(data.vocalAudioFileName))
-        {
-            PlayVocalAudio(data.vocalAudioFileName);
+            UpdateBackgroundImage(data.backgroundImageName);
         }
 
         currentLine++;
-
-        // 【新增】等待打字机+音频播放完成
-        StartCoroutine(WaitForContentComplete());
     }
 
-    // 原有逻辑（完全保留）
-    void UpdateAvatarImage(string imageFileName)
+    void UpdateBackgroundImage(string imageFileName)
     {
-        string imagePath = Constants.AVATAR_PATH + imageFileName;
+        // 拼接路径：image/background/rbg1（去掉后缀）
+        string imagePath = Constants.BACKGROUND_PATH + imageFileName.Replace(".jpg", "").Replace(".png", "");
         Sprite sprite = Resources.Load<Sprite>(imagePath);
+
         if (sprite != null)
         {
-            avatarImage.sprite = sprite;
-            avatarImage.gameObject.SetActive(true);
+            BackgroundImage.sprite = sprite;
+            BackgroundImage.gameObject.SetActive(true);
+            Debug.Log("成功加载背景图：" + imageFileName);
         }
         else
         {
             Debug.LogError(Constants.IMAGE_LOAD_FAILED + imagePath);
+            // 容错：加载失败时显示默认背景（可选）
+            BackgroundImage.color = Color.black;
         }
     }
 
-    // 原有逻辑（完全保留）
-    void PlayVocalAudio(string audioFileName)
+    void PlaySceneVocal()
     {
-        // 第一步：强制加载1.mp3（手动能播放的文件）
-        string audioPath = "audio/vocal/1";
+        string audioPath = Constants.VOCAL_PATH + sceneVocalFileName;
         AudioClip audioClip = Resources.Load<AudioClip>(audioPath);
-        if (audioClip == null)
-        {
-            audioClip = Resources.Load<AudioClip>(audioPath + ".mp3");
-        }
 
         if (audioClip != null)
         {
-            // 关键补充：播放前先停止当前音频，避免覆盖
             vocalAudio.Stop();
             vocalAudio.clip = audioClip;
             vocalAudio.Play();
-            Debug.Log("代码成功播放：1.mp3"); // 加日志确认
+            Debug.Log("成功播放音效：" + sceneVocalFileName + ".mp3");
         }
         else
         {
@@ -160,32 +124,16 @@ public class VNManager : MonoBehaviour
         }
     }
 
-    // 【新增】等待打字机和音频播放完成
-    IEnumerator WaitForContentComplete()
-    {
-        // 等待打字机效果完成
-        while (typewriterEffect.IsTyping())
-        {
-            yield return null;
-        }
-
-        // 等待音频播放完成（如果有音频）
-        if (vocalAudio.isPlaying)
-        {
-            yield return new WaitUntil(() => !vocalAudio.isPlaying);
-        }
-
-        // 若已是最后一行，显示切换按钮
-        if (currentLine >= storyData.Count && switchToThirdSceneBtn != null)
-        {
-            switchToThirdSceneBtn.gameObject.SetActive(true);
-        }
-    }
-
-    // 【新增】切换到第三场景的核心方法
     void SwitchToThirdScene()
     {
-        // 切换场景
-        SceneManager.LoadScene(3);
+        try
+        {
+            SceneManager.LoadScene(targetSceneIndex);
+            Debug.Log("成功切换到第三场景（索引3）");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("切换场景失败：" + e.Message);
+        }
     }
 }

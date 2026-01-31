@@ -6,14 +6,13 @@ using UnityEngine;
 
 public class ExcelReaderFive
 {
+    // 仅存储背景图片名（A列）
     public struct ExcelDataFive
     {
-        public string speakerName;         // A列：说话人
-        public string speakingContent;     // B列：对话内容
-        public string avatarImageFileName; // C列：头像文件名
-        public string vocalAudioFileName;  // D列：音频文件名
+        public string backgroundImageName; // A列：背景图片名（如bg1.jpg）
     }
 
+    // 读取Excel：仅读A列，从0行（首行）开始
     public static List<ExcelDataFive> ReadExcel(string filePath)
     {
         List<ExcelDataFive> excelData = new List<ExcelDataFive>();
@@ -25,7 +24,8 @@ public class ExcelReaderFive
             {
                 do
                 {
-                    bool isFirstRow = true;
+                    // 不跳过首行（从0行开始读）
+                    bool isFirstRow = false;
                     while (reader.Read())
                     {
                         if (isFirstRow)
@@ -35,10 +35,8 @@ public class ExcelReaderFive
                         }
 
                         ExcelDataFive data = new ExcelDataFive();
-                        data.speakerName = reader.IsDBNull(0) ? string.Empty : reader.GetValue(0).ToString().Trim();
-                        data.speakingContent = reader.IsDBNull(1) ? string.Empty : reader.GetValue(1).ToString().Trim();
-                        data.avatarImageFileName = reader.IsDBNull(3) ? string.Empty : reader.GetValue(3).ToString().Trim();
-                        data.vocalAudioFileName = reader.IsDBNull(2) ? string.Empty : reader.GetValue(2).ToString().Trim();
+                        // 仅读A列（索引0）
+                        data.backgroundImageName = reader.IsDBNull(0) ? string.Empty : reader.GetValue(0).ToString().Trim();
 
                         excelData.Add(data);
                     }

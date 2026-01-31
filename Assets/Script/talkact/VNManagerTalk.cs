@@ -1,55 +1,53 @@
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class VNManagerTalk : MonoBehaviour
 {
-    // 对齐原有UI命名
-    public TextMeshProUGUI SpeakerName;
-    public TextMeshProUGUI SpeekContent;
-    public TypewriterEffectTalk typewriterEffect;
-    public Image AvatarImage;
-    public AudioSource VocalAudio;
+    // 核心引用（仅保留3个必要组件）
+    public AudioSource VocalAudio;       // 音效播放组件
+    public Image BackgroundImage;        // 背景显示组件
+    public Button TalktoMenu;            // 场景切换按钮
+    public int targetSceneIndex = 8;     // 目标场景索引（保留）
 
-    // 按钮名改为TalktoMenu
-    public Button TalktoMenu;
-    // 目标场景：索引8（或填Menu场景名）
-    public int targetSceneIndex = 8;
+    // 场景唯一音效文件名（可在Inspector改，如backmusic）
+    public string sceneVocalFileName = "backmusic";
 
-    // 自动读取ConstantsTalk里的4.xlsx，无需改
+    // Excel数据存储（自动读取4.xlsx）
     private string storyPath = ConstantsTalk.STORY_PATH;
     private string defaultStoryFileName = ConstantsTalk.DEFAULT_STORY_FILE_NAME;
     private List<ExcelReaderTalk.ExcelDataTalk> storyData;
-    private int currentLine = 0;
+    private int currentLine = 0; // 当前背景行索引
 
     void Start()
     {
-        // 初始化TalktoMenu按钮
+        // 初始化TalktoMenu按钮：默认隐藏
         if (TalktoMenu != null)
         {
             TalktoMenu.gameObject.SetActive(false);
             TalktoMenu.onClick.AddListener(SwitchToMenuScene);
         }
 
-        // 自动加载4.xlsx
+        // 加载Excel背景数据（4.xlsx）
         LoadStoryFromFile(storyPath + defaultStoryFileName);
         if (storyData != null && storyData.Count > 0)
         {
-            DisplayNextLine();
+            PlaySceneVocal();    // 播放场景唯一音效
+            DisplayThisLine();   // 显示第一张背景
         }
     }
 
     void Update()
     {
+        // 鼠标左键切换下一张背景
         if (Input.GetMouseButtonDown(0))
         {
             DisplayNextLine();
         }
     }
 
+    // 加载Excel中的背景数据
     void LoadStoryFromFile(string path)
     {
         storyData = ExcelReaderTalk.ReadExcel(path);
@@ -59,6 +57,7 @@ public class VNManagerTalk : MonoBehaviour
         }
     }
 
+    // 切换下一张背景（无背景则显示按钮）
     void DisplayNextLine()
     {
         if (storyData == null || currentLine >= storyData.Count)
@@ -70,54 +69,34 @@ public class VNManagerTalk : MonoBehaviour
             }
             return;
         }
-
-        if (typewriterEffect.IsTyping())
-        {
-            typewriterEffect.CompleteLine();
-        }
-        else
-        {
-            if (TalktoMenu != null)
-            {
-                TalktoMenu.gameObject.SetActive(false);
-            }
-            DisplayThisLine();
-        }
+        DisplayThisLine();
     }
 
+    // 显示当前行背景
     void DisplayThisLine()
     {
         var data = storyData[currentLine];
-        SpeakerName.text = data.speakerName;
-        SpeekContent.text = data.speakingContent;
-        typewriterEffect.StartTyping(SpeekContent.text);
 
-        if (!string.IsNullOrEmpty(data.avatarImageFileName))
+        // 加载并显示背景图片
+        if (!string.IsNullOrEmpty(data.backgroundImageName))
         {
-            UpdateAvatarImage(data.avatarImageFileName);
-        }
-        else
-        {
-            AvatarImage.gameObject.SetActive(false);
+            UpdateBackgroundImage(data.backgroundImageName);
         }
 
-        if (!string.IsNullOrEmpty(data.vocalAudioFileName))
-        {
-            PlayVocalAudio(data.vocalAudioFileName);
-        }
-
-        currentLine++;
-        StartCoroutine(WaitForContentComplete());
+        currentLine++; // 切换到下一行
     }
 
-    void UpdateAvatarImage(string imageFileName)
+    // 加载背景图片（Resources加载，自动识别jpg/png）
+    void UpdateBackgroundImage(string imageFileName)
     {
-        string imagePath = ConstantsTalk.AVATAR_PATH + imageFileName;
+        // 拼接路径：image/background/bg1（去掉后缀）
+        string imagePath = ConstantsTalk.BACKGROUND_PATH + imageFileName.Replace(".jpg", "").Replace(".png", "");
         Sprite sprite = Resources.Load<Sprite>(imagePath);
+
         if (sprite != null)
         {
-            AvatarImage.sprite = sprite;
-            AvatarImage.gameObject.SetActive(true);
+            BackgroundImage.sprite = sprite;
+            BackgroundImage.gameObject.SetActive(true);
         }
         else
         {
@@ -125,21 +104,19 @@ public class VNManagerTalk : MonoBehaviour
         }
     }
 
-    void PlayVocalAudio(string audioFileName)
+    // 播放场景唯一音效（仅播放一次）
+    void PlaySceneVocal()
     {
-        string audioPath = "Talk/audio/vocal/1";
+        // 拼接路径：audio/vocal/backmusic（无后缀）
+        string audioPath = ConstantsTalk.VOCAL_PATH + sceneVocalFileName;
         AudioClip audioClip = Resources.Load<AudioClip>(audioPath);
-        if (audioClip == null)
-        {
-            audioClip = Resources.Load<AudioClip>(audioPath + ".mp3");
-        }
 
         if (audioClip != null)
         {
             VocalAudio.Stop();
             VocalAudio.clip = audioClip;
             VocalAudio.Play();
-            Debug.Log("代码成功播放：1.mp3");
+            Debug.Log("代码成功播放：backmusic.mp3");
         }
         else
         {
@@ -147,31 +124,13 @@ public class VNManagerTalk : MonoBehaviour
         }
     }
 
-    IEnumerator WaitForContentComplete()
-    {
-        while (typewriterEffect.IsTyping())
-        {
-            yield return null;
-        }
-
-        if (VocalAudio.isPlaying)
-        {
-            yield return new WaitUntil(() => !VocalAudio.isPlaying);
-        }
-
-        if (currentLine >= storyData.Count && TalktoMenu != null)
-        {
-            TalktoMenu.gameObject.SetActive(true);
-        }
-    }
-
-    // 切换到8号场景
+    // 切换到8号场景（逻辑不变）
     void SwitchToMenuScene()
     {
         try
         {
-            SceneManager.LoadScene(0);
-            Debug.Log("成功切换到场景索引：" + 0);
+            SceneManager.LoadScene(targetSceneIndex);
+            Debug.Log("成功切换到场景索引：" + targetSceneIndex);
         }
         catch (System.Exception e)
         {

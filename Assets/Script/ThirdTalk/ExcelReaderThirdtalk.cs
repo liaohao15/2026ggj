@@ -6,26 +6,27 @@ using UnityEngine;
 
 public class ExcelReaderThirdtalk
 {
+    // 仅存储背景图片名（A列）
     public struct ExcelDataThirdtalk
     {
-        public string speakerName;         // A列：说话人
-        public string speakingContent;     // B列：对话内容
-        public string avatarImageFileName; // C列：头像文件名
-        public string vocalAudioFileName;  // D列：音频文件名
+        public string backgroundImageName; // A列：背景图片名（如bg1.jpg，无空格）
     }
 
+    // 读取Excel：仅读A列，从0行（首行）开始
     public static List<ExcelDataThirdtalk> ReadExcel(string filePath)
     {
         List<ExcelDataThirdtalk> excelData = new List<ExcelDataThirdtalk>();
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
+        // 打开Excel文件流
         using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
         {
             using (var reader = ExcelReaderFactory.CreateReader(stream))
             {
                 do
                 {
-                    bool isFirstRow = true;
+                    // 不跳过首行（从0行开始读）
+                    bool isFirstRow = false;
                     while (reader.Read())
                     {
                         if (isFirstRow)
@@ -35,10 +36,8 @@ public class ExcelReaderThirdtalk
                         }
 
                         ExcelDataThirdtalk data = new ExcelDataThirdtalk();
-                        data.speakerName = reader.IsDBNull(0) ? string.Empty : reader.GetValue(0).ToString().Trim();
-                        data.speakingContent = reader.IsDBNull(1) ? string.Empty : reader.GetValue(1).ToString().Trim();
-                        data.avatarImageFileName = reader.IsDBNull(3) ? string.Empty : reader.GetValue(3).ToString().Trim();
-                        data.vocalAudioFileName = reader.IsDBNull(2) ? string.Empty : reader.GetValue(2).ToString().Trim();
+                        // 读A列（索引0）
+                        data.backgroundImageName = reader.IsDBNull(0) ? string.Empty : reader.GetValue(0).ToString().Trim();
 
                         excelData.Add(data);
                     }
