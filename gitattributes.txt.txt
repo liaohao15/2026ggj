@@ -1,0 +1,19 @@
+# 统一换行符为 LF，关闭自动转换
+* text=auto eol=lf
+
+# Unity 资源文件特殊处理
+*.meta text
+*.unity text
+*.asset text
+*.prefab text
+*.cs text
+*.shader text
+
+# 二进制文件不转换（图片、模型等）
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.fbx binary
+*.obj binary
+*.mat binary
+*.dll binary

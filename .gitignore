@@ -1,0 +1,22 @@
+.DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules/
+public/
+.deploy*/
+_multiconfig.yml
+
+# Visual Studio缓存目录
+.vs/
+
+# Unity冗余文件（补充）
+Library/
+Temp/
+Build/
+Logs/
+Packages/packages-lock.json
+MemoryCaptures/
+sysinfo.txt
+*.csproj
+*.sln
