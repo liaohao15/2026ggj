@@ -16,7 +16,7 @@ public class ItemCollector : MonoBehaviour
     // 全局计数器：已收集物品数量（无顺序限制）
     private static int collectedItemCount = 0;
     // 场景中可收集物品总数（改这里！有几个填几个）
-    public static int totalItemCount = 2;
+    public static int totalItemCount = 3;
 
     private void OnTriggerEnter(Collider other)
     {
