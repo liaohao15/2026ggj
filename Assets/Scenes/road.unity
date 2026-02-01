@@ -492,8 +492,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleCarPrefab: {fileID: 7549413829998310490}
-  spawnInterval: 2
-  obstacleSpeed: 10
+  spawnInterval: 3
+  obstacleSpeed: 15
   spawnRangeX: 1.2
   destroyZ: -10
   obstacleSpawnerTwo: {fileID: 1077287797}

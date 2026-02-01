@@ -185,7 +185,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 0b02d97f8881f8c4eab6bf438d1e5a90, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -865,7 +865,7 @@ MonoBehaviour:
   pi: {fileID: 457037439}
   anim: {fileID: 457037438}
   rigid: {fileID: 457037436}
-  movingSpeed: 1
+  movingSpeed: 2
 --- !u!114 &457037435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -927,11 +927,11 @@ MonoBehaviour:
   KeyDown: 115
   KeyLeft: 97
   KeyRight: 100
-  KeyA: 304
-  KeyJup: 0
-  KeyJdown: 0
-  KeyJleft: 0
-  KeyJright: 0
+  KeyA: 303
+  KeyJup: 273
+  KeyJdown: 274
+  KeyJleft: 276
+  KeyJright: 275
   Dup: 0
   Dturn: 0
   TargetDup: 0
@@ -1667,6 +1667,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5435658653341731337, guid: d51e3c62968274f4192dbb2f648825a5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9a821c21f6db9a445944d109ef4557d1, type: 2}
     - target: {fileID: 8580316503501381549, guid: d51e3c62968274f4192dbb2f648825a5, type: 3}
       propertyPath: m_LocalScale.x
       value: 30.140001
@@ -1887,7 +1891,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f1e762d88c7ee464a9001f49680c4d8c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1960,6 +1964,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 5435658653341731337, guid: d51e3c62968274f4192dbb2f648825a5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9a821c21f6db9a445944d109ef4557d1, type: 2}
     - target: {fileID: 8580316503501381549, guid: d51e3c62968274f4192dbb2f648825a5, type: 3}
       propertyPath: m_LocalScale.x
       value: 6.6569695
@@ -2229,6 +2237,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5435658653341731337, guid: d51e3c62968274f4192dbb2f648825a5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9a821c21f6db9a445944d109ef4557d1, type: 2}
     - target: {fileID: 8580316503501381549, guid: d51e3c62968274f4192dbb2f648825a5, type: 3}
       propertyPath: m_LocalScale.x
       value: 30.140001
@@ -2298,6 +2310,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5435658653341731337, guid: d51e3c62968274f4192dbb2f648825a5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9a821c21f6db9a445944d109ef4557d1, type: 2}
     - target: {fileID: 8580316503501381549, guid: d51e3c62968274f4192dbb2f648825a5, type: 3}
       propertyPath: m_LocalScale.x
       value: 29.271019
@@ -2367,6 +2383,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 5435658653341731337, guid: d51e3c62968274f4192dbb2f648825a5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9a821c21f6db9a445944d109ef4557d1, type: 2}
     - target: {fileID: 8580316503501381549, guid: d51e3c62968274f4192dbb2f648825a5, type: 3}
       propertyPath: m_LocalScale.x
       value: 29.271019
@@ -2800,7 +2820,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 3b39847b26fd7374f8c20ddbe60c09f6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2894,6 +2914,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 5435658653341731337, guid: d51e3c62968274f4192dbb2f648825a5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9a821c21f6db9a445944d109ef4557d1, type: 2}
     - target: {fileID: 8580316503501381549, guid: d51e3c62968274f4192dbb2f648825a5, type: 3}
       propertyPath: m_LocalScale.x
       value: 6.6569695
@@ -2963,6 +2987,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 5435658653341731337, guid: d51e3c62968274f4192dbb2f648825a5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9a821c21f6db9a445944d109ef4557d1, type: 2}
     - target: {fileID: 8580316503501381549, guid: d51e3c62968274f4192dbb2f648825a5, type: 3}
       propertyPath: m_LocalScale.x
       value: 6.6569695
