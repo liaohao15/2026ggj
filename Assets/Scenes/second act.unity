@@ -429,7 +429,7 @@ GameObject:
   - component: {fileID: 101354612}
   - component: {fileID: 101354611}
   m_Layer: 5
-  m_Name: SwitchToThirdSceneBtn
+  m_Name: NextSceneButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -492,7 +492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5051898, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -640,7 +640,7 @@ GameObject:
   - component: {fileID: 756236271}
   - component: {fileID: 756236272}
   m_Layer: 0
-  m_Name: VNController
+  m_Name: SceneController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -673,11 +673,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85bdc276333c4546826f27c8b4f59a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vocalAudio: {fileID: 17473721}
-  BackgroundImage: {fileID: 850343746}
-  switchToThirdSceneBtn: {fileID: 101354611}
+  backgroundImage: {fileID: 850343746}
+  nextSceneButton: {fileID: 101354611}
   targetSceneIndex: 3
-  sceneVocalFileName: 1
+  sceneFolderPrefix: one
+  imageNameList:
+  - 1
+  - 2
+  - 3
+  - 4
 --- !u!1 &850343744
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,7 +694,7 @@ GameObject:
   - component: {fileID: 850343747}
   - component: {fileID: 850343746}
   m_Layer: 5
-  m_Name: background
+  m_Name: BackgroundImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -735,7 +739,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 7fd29b752268f1d40bf62caf3f1ad8c6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
